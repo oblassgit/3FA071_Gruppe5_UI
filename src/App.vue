@@ -1,5 +1,15 @@
 <script setup>
+  import customerService from "@/api/customerService.js";
+  import CustomerList from './components/CustomerList.vue'
 
+  //const response = await customerService.getAllCustomers();
+
+  async function test() {
+    const response = await customerService.getAllCustomers();
+    console.log(response.data);
+  }
+
+  test()
 </script>
 
 <template>
@@ -10,7 +20,9 @@
     </div>
   </header>
 
+
   <main>
+<CustomerList />
   </main>
 </template>
 
