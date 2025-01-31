@@ -8,6 +8,8 @@ const routes = [
     { path: "/customers/new", component: CustomerForm },
     { path: "/customers/:id", component: CustomerDetail, props: true },
     { path: "/customers/edit/:id", component: CustomerForm, props: true },
+    { path: "/customers/new", component: CustomerForm },
+    { path: "/customers/edit/:id", component: CustomerForm, props: true }
 ];
 
 const router = createRouter({
