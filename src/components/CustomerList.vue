@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       customers: [],
+      dontAskAgain: localStorage.getItem("dontAskDelete") === "true", // Load preference
     };
   },
   async created() {
@@ -49,8 +50,26 @@ export default {
   },
   methods: {
     async deleteCustomer(uuid) {
-      await customerService.deleteCustomer(uuid);
-      this.customers = this.customers.filter((customer) => customer.uuid !== uuid);
+      if (!this.dontAskAgain) {
+        const userConfirmed = confirm(
+            "Are you sure you want to delete this customer?\n\nCheck 'Don't ask again' to skip this confirmation in the future."
+        );
+        if (!userConfirmed) return;
+
+        const dontAsk = confirm("Don't ask again for deletions?");
+        if (dontAsk) {
+          localStorage.setItem("dontAskDelete", "true");
+          this.dontAskAgain = true;
+        }
+      }
+
+      try {
+        await customerService.deleteCustomer(uuid);
+        alert("Customer deleted successfully!");
+        this.customers = this.customers.filter((customer) => customer.uuid !== uuid);
+      } catch (error) {
+        console.error("Error deleting customer:", error);
+      }
     },
   },
 };
