@@ -74,7 +74,7 @@
 import customerService from "@/api/customerService";
 
 export default {
-  props: ["customerId"],
+  props: ["id"],
   data() {
     return {
       customer: {
@@ -88,11 +88,13 @@ export default {
     };
   },
   async created() {
-    if (this.customerId) {
+    console.log("Received ID from route:", this.id); // Debugging log
+    if (this.id) {
       this.isEdit = true;
       try {
-        const response = await customerService.getCustomer(this.customerId);
-        this.customer = response.data;
+        const response = await customerService.getCustomer(this.id);
+        this.customer = response.data.customer; // ✅ Assign retrieved customer
+        console.log("Loaded customer data:", this.customer);
       } catch (error) {
         console.error("Error fetching customer:", error);
       }
@@ -100,17 +102,13 @@ export default {
   },
   methods: {
     async saveCustomer() {
+      console.log("Saving customer:", this.customer);
       try {
-        const payload = {
-          customer: this.customer, // Wrap the customer data
-        };
-
         if (this.isEdit) {
-          await customerService.updateCustomer(payload);
+          await customerService.updateCustomer(this.customer);
         } else {
-          await customerService.createCustomer(payload);
+          await customerService.createCustomer(this.customer);
         }
-
         this.$router.push("/");
       } catch (error) {
         console.error("Error saving customer:", error);
