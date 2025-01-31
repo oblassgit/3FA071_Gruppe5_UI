@@ -102,12 +102,15 @@ export default {
   },
   methods: {
     async saveCustomer() {
+      const wrappedCustomer = {
+        customer: this.customer, // Wrap the customer data
+      };
       console.log("Saving customer:", this.customer);
       try {
         if (this.isEdit) {
-          await customerService.updateCustomer(this.customer);
+          await customerService.updateCustomer(wrappedCustomer);
         } else {
-          await customerService.createCustomer(this.customer);
+          await customerService.createCustomer(wrappedCustomer);
         }
         this.$router.push("/");
       } catch (error) {
