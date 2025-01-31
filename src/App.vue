@@ -1,44 +1,59 @@
-<script setup>
-
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-    </div>
-  </header>
-
-  <main>
-  </main>
+  <div id="app">
+    <header class="bg-blue-500 text-white p-4">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+          <router-link class="navbar-brand" to="/">Customer Manager</router-link>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <router-link class="nav-link" to="/">Home</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" to="/customers">Customers</router-link>
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" to="/customers/new">Add Customer</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto my-8">
+      <router-view />
+    </main>
+    <footer class="bg-gray-200 text-center p-4 mt-auto">
+      <p>&copy; Hausverwaltung 2025</p>
+    </footer>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script>
+export default {
+  name: "App",
+};
+</script>
+
+<style>
+/* Add some global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+a:hover {
+  text-decoration: underline;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.container {
+  max-width: 800px;
 }
 </style>
