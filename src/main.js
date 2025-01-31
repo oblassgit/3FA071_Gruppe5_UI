@@ -1,10 +1,7 @@
-import './assets/main.css'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-import CustomerList from './components/CustomerList.vue'
-
-import { createApp } from 'vue'
-import App from './App.vue'
-
-createApp(App).mount('#app')
-
-App.component('CustomerList', CustomerList)
+createApp(App).use(router).mount("#app");
