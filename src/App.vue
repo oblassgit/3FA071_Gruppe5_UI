@@ -15,6 +15,9 @@
               <li class="nav-item">
                 <router-link class="nav-link" to="/customers/new">Add Customer</router-link>
               </li>
+              <li class="import-item">
+                <router-link class="nav-link" to="/customers/import">Import</router-link>
+              </li>
             </ul>
           </div>
         </div>
