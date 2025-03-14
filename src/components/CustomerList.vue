@@ -29,6 +29,9 @@
         </tr>
         </tbody>
       </table>
+      <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
+        <b-dropdown-item>Test</b-dropdown-item>
+      </b-dropdown>
     </div>
   </div>
 </template>
@@ -71,6 +74,10 @@ export default {
         console.error("Error deleting customer:", error);
       }
     },
+    async Export() {
+      alert('Export');
+
+    }
   },
 };
 </script>

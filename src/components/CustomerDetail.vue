@@ -22,7 +22,7 @@
 
 <script>
 import customerService from "@/api/customerService";
-import moment from "moment";
+//import moment from "moment";
 
 export default {
   props: ["id"],
