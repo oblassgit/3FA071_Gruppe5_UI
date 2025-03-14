@@ -1,8 +1,8 @@
 <template>
-  <div class="container mt-4">
+  <div class="container mt-4" tabindex="0" ref="container" @keyup.esc.prevent="router().back()">
     <h1 class="mb-4 text-center">{{ isEdit ? "Edit Customer" : "Add Customer" }}</h1>
     <div class="card shadow p-4">
-      <form @submit.prevent="saveCustomer">
+      <form @submit.prevent="saveCustomer" @keyup.enter="saveCustomer">
         <div class="row">
           <!-- First Name -->
           <div class="col-md-6 mb-3">
@@ -60,9 +60,12 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary w-100">
-            {{ isEdit ? "Update" : "Create" }}
+        <div class="d-flex gap-2 mt-4">
+          <button type="button" @click="$router.back()" class="btn btn-secondary">
+            Cancel <span class="key-symbol">esc</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            {{ isEdit ? "Update" : "Create" }} <span class="key-symbol">⏎</span>
           </button>
         </div>
       </form>
@@ -101,6 +104,9 @@ export default {
     }
   },
   methods: {
+    router() {
+      return this.$router;
+    },
     async saveCustomer() {
       const wrappedCustomer = {
         customer: this.customer, // Wrap the customer data
@@ -112,7 +118,7 @@ export default {
         } else {
           await customerService.createCustomer(wrappedCustomer);
         }
-        this.$router.push("/");
+        this.$router.push("/"); // Redirect to customer list
       } catch (error) {
         console.error("Error saving customer:", error);
       }
@@ -120,3 +126,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.key-symbol {
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+</style>

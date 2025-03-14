@@ -4,12 +4,24 @@ const apiClient = axios.create({
     baseURL: "http://127.0.0.1:8080/rest/customers", // Adjust baseURL to your backend
     headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json"
     },
 });
 
 export default {
-    getAllCustomers() {
-        return apiClient.get("/");
+    async getAllCustomers() {
+        try {
+            const response = await apiClient.get("");
+            console.log('Response:', response); // Debug log
+            return response;
+        } catch (error) {
+            console.error('Error details:', {
+                message: error.message,
+                response: error.response,
+                request: error.request
+            });
+            throw error;
+        }
     },
     getCustomer(uuid) {
         return apiClient.get(`/${uuid}`);
