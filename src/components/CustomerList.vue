@@ -29,17 +29,22 @@
         </tr>
         </tbody>
       </table>
-      <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
-        <b-dropdown-item>Test</b-dropdown-item>
-      </b-dropdown>
+
     </div>
+    <b-dropdown id="dropdown-export" text="Export" variant="primary">
+      <b-dropdown-item @click="Export('CSV')">CSV</b-dropdown-item>
+      <b-dropdown-item @click="Export('JSON')">JSON</b-dropdown-item>
+      <b-dropdown-item @click="Export('XML')">XML</b-dropdown-item>
+    </b-dropdown>
   </div>
 </template>
 
 <script>
 import customerService from "@/api/customerService";
+import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
 
 export default {
+  components: {BDropdown, BDropdownItem},
   data() {
     return {
       customers: [],
