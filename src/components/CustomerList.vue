@@ -29,15 +29,23 @@
         </tr>
         </tbody>
       </table>
+
     </div>
+    <b-dropdown id="dropdown-export" text="Export" variant="primary">
+      <b-dropdown-item @click="Export('CSV')">CSV</b-dropdown-item>
+      <b-dropdown-item @click="Export('JSON')">JSON</b-dropdown-item>
+      <b-dropdown-item @click="Export('XML')">XML</b-dropdown-item>
+    </b-dropdown>
   </div>
 </template>
 
 <script>
 import customerService from "@/api/customerService";
+import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
 import router from "@/router/index.js";
 
 export default {
+  components: {BDropdown, BDropdownItem},
   data() {
     return {
       customers: [],
@@ -74,6 +82,10 @@ export default {
         console.error("Error deleting customer:", error);
       }
     },
+    async Export() {
+      alert('Export');
+
+    }
   },
 };
 </script>
