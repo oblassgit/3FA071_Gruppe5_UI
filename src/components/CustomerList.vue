@@ -1,6 +1,11 @@
 <template>
   <div class="container mt-4">
-    <h1 class="mb-4">Customer List</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Customer List</h1>
+      <router-link to="/customers/new" class="btn btn-primary">
+        New Customer
+      </router-link>
+    </div>
     <div class="card shadow p-4">
       <table class="table table-striped table-hover">
         <thead class="table-dark">
@@ -9,23 +14,18 @@
           <th>Last Name</th>
           <th>Gender</th>
           <th>Birth Date</th>
-          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr v-if="customers.length === 0">
-          <td colspan="5" class="text-center text-muted">No customers found.</td>
+          <td colspan="4" class="text-center text-muted">No customers found.</td>
         </tr>
-        <tr v-else v-for="customer in customers" :key="customer.uuid">
-          <td>{{ customer.firstName }}</td>
-          <td>{{ customer.lastName }}</td>
-          <td>{{ customer.gender }}</td>
-          <td>{{ customer.birthDate }}</td>
-          <td>
-            <router-link :to="'/customers/' + customer.uuid" class="btn btn-sm btn-info">View</router-link>
-            <router-link :to="'/customers/edit/' + customer.uuid" class="btn btn-sm btn-warning ms-2">Edit</router-link>
-            <button @click="deleteCustomer(customer.uuid)" class="btn btn-sm btn-danger ms-2">Delete</button>
-          </td>
+        <tr v-else v-for="customer in customers" :key="customer.uuid"
+            @click="router().push({ name: 'customerDetail', params: {id: customer.uuid}})">
+            <td>{{ customer.firstName }}</td>
+            <td>{{ customer.lastName }}</td>
+            <td>{{ customer.gender }}</td>
+            <td>{{ customer.birthDate }}</td>
         </tr>
         </tbody>
       </table>
@@ -42,6 +42,7 @@
 <script>
 import customerService from "@/api/customerService";
 import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
+import router from "@/router/index.js";
 
 export default {
   components: {BDropdown, BDropdownItem},
@@ -54,9 +55,11 @@ export default {
   async created() {
     const response = await customerService.getAllCustomers();
     this.customers = response.data.customers;
-    debugger;
   },
   methods: {
+    router() {
+      return router
+    },
     async deleteCustomer(uuid) {
       if (!this.dontAskAgain) {
         const userConfirmed = confirm(

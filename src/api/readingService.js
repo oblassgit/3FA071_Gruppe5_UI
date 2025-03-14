@@ -11,6 +11,10 @@ export default {
     getReading(uuid) {
         return apiClient.get(`/${uuid}`);
     },
+    getReadings() {
+        const response = apiClient.get("")
+        return response
+    },
     getReadingsByParameter(customer, start, end, kindOfMeter) {
         return apiClient.get("?" +
         customer == null ? "customer=" + customer : "" +
@@ -19,10 +23,33 @@ export default {
         kindOfMeter == null ? "kindOfMeter=" + kindOfMeter : "");
     },
     createReading(reading) {
-        return apiClient.post("/", reading);
+        const payload = {
+            reading: {
+                customer: reading.customer,
+                dateOfReading: reading.dateOfReading,
+                meterId: reading.meterId,
+                substitute: reading.substitute,
+                meterCount: reading.meterCount,
+                kindOfMeter: reading.kindOfMeter,
+                comment: reading.comment || null
+            }
+        };
+        return apiClient.post("/", payload);
     },
-    updateReading(reading) {
-        return apiClient.put("/", reading);
+    updateReading(uuid, reading) {
+        const payload = {
+            reading: {
+                uuid: uuid,
+                customer: reading.customer,
+                dateOfReading: reading.dateOfReading,
+                meterId: reading.meterId,
+                substitute: reading.substitute,
+                meterCount: reading.meterCount,
+                kindOfMeter: reading.kindOfMeter,
+                comment: reading.comment || null
+            }
+        };
+        return apiClient.put("/", payload);
     },
     deleteReading(uuid) {
         return apiClient.delete(`/${uuid}`);
