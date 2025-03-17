@@ -5,6 +5,11 @@
       <router-link to="/customers/new" class="btn btn-primary">
         New Customer
       </router-link>
+      <b-dropdown id="dropdown-export" text="Export" variant="primary">
+        <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
+        <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
+        <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+      </b-dropdown>
     </div>
     <div class="card shadow p-4">
       <table class="table table-striped table-hover">
@@ -29,18 +34,13 @@
         </tr>
         </tbody>
       </table>
-
     </div>
-    <b-dropdown id="dropdown-export" text="Export" variant="primary">
-      <b-dropdown-item @click="Export('CSV')">CSV</b-dropdown-item>
-      <b-dropdown-item @click="Export('JSON')">JSON</b-dropdown-item>
-      <b-dropdown-item @click="Export('XML')">XML</b-dropdown-item>
-    </b-dropdown>
   </div>
 </template>
 
 <script>
 import customerService from "@/api/customerService";
+import exportHelper from "@/helper/exportHelper.js";
 import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
 import router from "@/router/index.js";
 
@@ -82,10 +82,19 @@ export default {
         console.error("Error deleting customer:", error);
       }
     },
-    async Export() {
-      alert('Export');
-
-    }
-  },
+    async Export(fileType) {
+      switch(fileType) {
+        case 'csv':
+        alert('csv');
+          break;
+        case 'json':
+          exportHelper.exportJson('customers');
+          break;
+        case 'xml':
+          alert('xml');
+          break;
+      }
+    },
+  }
 };
 </script>
