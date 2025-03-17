@@ -8,8 +8,7 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label">Customer</label>
-              <select v-model="reading.customer" class="form-select">
-                <option value="">Select Customer</option>
+              <select v-model="reading.customer" class="form-select" required>
                 <option v-for="customer in customers" :key="customer.uuid" :value="customer">
                   {{ customer.firstName }} {{ customer.lastName }}
                 </option>
@@ -18,12 +17,12 @@
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Date of Reading</label>
-              <input type="date" v-model="reading.dateOfReading" class="form-control" required>
+              <input type="date" v-model="reading.dateOfReading" class="form-control" required :max="today">
             </div>
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Meter ID</label>
-              <input type="text" v-model="reading.meterId" class="form-control" required>
+              <input type="text" v-model="reading.meterId" class="form-control">
             </div>
 
             <div class="col-md-6 mb-3">
@@ -92,6 +91,9 @@ export default {
   computed: {
     isEditing() {
       return !!this.id;
+    },
+    today() {
+      return new Date().toISOString().split('T')[0];
     }
   },
   async created() {

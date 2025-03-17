@@ -38,6 +38,7 @@
                 type="date"
                 v-model="customer.birthDate"
                 class="form-control"
+                :max="today"
             />
           </div>
 
@@ -89,6 +90,11 @@ export default {
       },
       isEdit: false,
     };
+  },
+  computed: {
+    today() {
+      return new Date().toISOString().split("T")[0];
+    },
   },
   async created() {
     console.log("Received ID from route:", this.id); // Debugging log
