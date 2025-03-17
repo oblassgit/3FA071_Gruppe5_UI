@@ -19,25 +19,6 @@
         </table>
       </div>
     </div>
-    <div class="readings">
-      <h2>import reading</h2>
-      <input type="file" @change="handleFile" accept=".csv, .xml, .json" />
-      <div v-if="parsedData.length">
-        <h3>results:</h3>
-        <table>
-          <thead>
-          <tr>
-            <th v-for="(key, index) in Object.keys(parsedData[0])" :key="index">{{ key }}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(row, rowIndex) in parsedData" :key="rowIndex">
-            <td v-for="(value, key) in row" :key="key">{{ value }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </template>
 
