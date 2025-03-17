@@ -51,11 +51,18 @@
     <router-link to="/readings/new" class="btn btn-primary mt-3">
       Add New Reading
     </router-link>
+    <b-dropdown id="dropdown-export" text="Export" variant="primary">
+      <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
+      <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
+      <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+    </b-dropdown>
   </div>
 </template>
 
 <script>
 import readingService from '@/api/readingService';
+import exportHelper from "@/helper/exportHelper.js";
+
 
 export default {
   data() {
@@ -102,6 +109,19 @@ export default {
       } catch (error) {
         console.error('Error deleting reading:', error);
         alert('Failed to delete reading');
+      }
+    },
+    async Export(fileType) {
+      switch(fileType) {
+        case 'csv':
+        alert('csv');
+          break;
+        case 'json':
+          exportHelper.exportJson('readings');
+          break;
+        case 'xml':
+          alert('xml');
+          break;
       }
     }
   }

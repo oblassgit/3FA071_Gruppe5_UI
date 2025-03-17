@@ -35,4 +35,7 @@ export default {
     deleteCustomer(uuid) {
         return apiClient.delete(`/${uuid}`);
     },
+    exportCustomer(fileType) {
+        return apiClient.get(`/export/${fileType}`);
+    }
 };

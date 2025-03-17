@@ -54,4 +54,7 @@ export default {
     deleteReading(uuid) {
         return apiClient.delete(`/${uuid}`);
     },
+    exportReading(fileType) {
+        return apiClient.get(`/export/${fileType}`);
+    }
 };
