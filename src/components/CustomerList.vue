@@ -7,6 +7,7 @@
       </router-link>
       <b-dropdown id="dropdown-export" text="Export" variant="primary">
         <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
+        <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
         <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
         <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
       </b-dropdown>
@@ -82,10 +83,10 @@ export default {
         console.error("Error deleting customer:", error);
       }
     },
-    async Export(fileType) {
+    async Export(fileType, region) {
       switch(fileType) {
         case 'csv':
-        alert('csv');
+          exportHelper.exportCsv('customers', region);
           break;
         case 'json':
           exportHelper.exportJson('customers');
