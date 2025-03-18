@@ -121,7 +121,7 @@ export default {
           exportHelper.exportJson('readings');
           break;
         case 'xml':
-          alert('xml');
+          exportHelper.exportXml('readings');
           break;
       }
     }
