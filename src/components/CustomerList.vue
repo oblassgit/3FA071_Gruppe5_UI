@@ -92,7 +92,7 @@ export default {
           exportHelper.exportJson('customers');
           break;
         case 'xml':
-          alert('xml');
+          exportHelper.exportXml('customers');
           break;
       }
     },

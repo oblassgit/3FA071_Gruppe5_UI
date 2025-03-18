@@ -3,7 +3,8 @@ import readingService from "@/api/readingService";
 
 export default {
     exportCsv,
-    exportJson
+    exportJson,
+    exportXml
 }
 
 async function exportCsv(objectType, region) {
@@ -47,6 +48,28 @@ async function exportJson(objectType) {
     } catch (error) {
         console.error(`Error while exporting ${objectType} as JSON:`, error);
         alert(`Failed to export ${objectType} as JSON.`);
+    }
+}
+
+async function exportXml(objectType) {
+    try {
+        let fileContent;
+        let response;
+        switch (objectType) {
+            case 'customers':
+                response = await customerService.exportCustomer('xml');
+                fileContent = response.data;
+                break;
+            case 'readings':
+                response = await readingService.exportReading('xml');
+                fileContent = response.data;
+                break;
+        }
+
+        downloadFile(fileContent, objectType + '.xml', 'application/xml');
+    } catch (error) {
+        console.error(`Error while exporting ${objectType} as XML:`, error);
+        alert(`Failed to export ${objectType} as XML.`);
     }
 }
 
