@@ -3,7 +3,7 @@
     <header class="bg-blue-500 text-white p-4">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-          <router-link class="navbar-brand" to="/">Customer Manager</router-link>
+          <div class="navbar-brand">Household-Hub</div>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
@@ -24,7 +24,7 @@
       <router-view />
     </main>
     <footer class="bg-gray-200 text-center p-4 mt-auto">
-      <p>&copy; Hausverwaltung 2025</p>
+      <p>&copy; Household-Hub 2025</p>
     </footer>
   </div>
 </template>
