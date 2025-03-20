@@ -118,7 +118,7 @@ export default {
         } else {
           await customerService.createCustomer(wrappedCustomer);
         }
-        this.$router.push("/"); // Redirect to customer list
+        this.$router.push("/customers"); // Redirect to customer list
       } catch (error) {
         console.error("Error saving customer:", error);
       }
