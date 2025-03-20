@@ -1,38 +1,40 @@
 <template>
   <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1>Customer List</h1>
-      <router-link to="/customers/new" class="btn btn-primary">
-        New Customer
-      </router-link>
-      <b-dropdown id="dropdown-export" text="Export" variant="primary">
-        <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
-        <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
-        <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
-        <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
-      </b-dropdown>
+      <h1 class="mb-0">Customer List</h1>
+      <div class="d-flex gap-2 ms-auto">
+        <router-link to="/customers/new" class="btn btn-primary">
+          Add customer
+        </router-link>
+        <b-dropdown id="dropdown-export" text="Export customer" variant="primary">
+          <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
+          <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
+          <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
+          <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
     <div class="card shadow p-4">
       <table class="table table-striped table-hover">
         <thead class="table-dark">
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Gender</th>
-          <th>Birth Date</th>
-        </tr>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Birth Date</th>
+          </tr>
         </thead>
         <tbody>
-        <tr v-if="customers.length === 0">
-          <td colspan="4" class="text-center text-muted">No customers found.</td>
-        </tr>
-        <tr v-else v-for="customer in customers" :key="customer.uuid"
+          <tr v-if="customers.length === 0">
+            <td colspan="4" class="text-center text-muted">No customers found.</td>
+          </tr>
+          <tr v-else v-for="customer in customers" :key="customer.uuid"
             @click="router().push({ name: 'customerDetail', params: {id: customer.uuid}})">
             <td>{{ customer.firstName }}</td>
             <td>{{ customer.lastName }}</td>
             <td>{{ customer.gender }}</td>
             <td>{{ customer.birthDate }}</td>
-        </tr>
+          </tr>
         </tbody>
       </table>
     </div>

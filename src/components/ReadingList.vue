@@ -1,62 +1,64 @@
 <template>
-  <div class="container mt-5">
-    <h1 class="mb-4">Reading List</h1>
-    <div class="card shadow">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Meter ID</th>
-              <th>Count</th>
-              <th>Type</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="reading in readings" :key="reading.uuid">
-              <td>
-                {{ reading.customer ? `${reading.customer.firstName} ${reading.customer.lastName}` : 'N/A' }}
-              </td>
-              <td>{{ new Date(reading.dateOfReading).toLocaleDateString() }}</td>
-              <td>{{ reading.meterId }}</td>
-              <td>{{ reading.meterCount }}</td>
-              <td>
-                <span :class="getMeterTypeClass(reading.kindOfMeter)">
-                  {{ reading.kindOfMeter }}
-                </span>
-              </td>
-              <td>
-                <div class="d-flex gap-2">
-                  <router-link :to="'/readings/' + reading.uuid" class="btn btn-sm btn-info">
-                    View
-                  </router-link>
-                  <router-link :to="'/readings/edit/' + reading.uuid" class="btn btn-sm btn-warning">
-                    Edit
-                  </router-link>
-                  <button @click="deleteReading(reading.uuid)" class="btn btn-sm btn-danger">
-                    Delete
-                  </button>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="mb-0">Reading List</h1>
+      <div class="d-flex gap-2 ms-auto">
+        <router-link to="/readings/new" class="btn btn-primary">
+          Add reading
+        </router-link>
+        <b-dropdown id="dropdown-export" text="Export readings" variant="primary">
+          <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
+          <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
+          <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
+          <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+        </b-dropdown>
       </div>
     </div>
-
-    <router-link to="/readings/new" class="btn btn-primary mt-3">
-      Add New Reading
-    </router-link>
-    <b-dropdown id="dropdown-export" text="Export" variant="primary">
-      <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
-      <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
-      <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
-      <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
-    </b-dropdown>
+    <div class="card shadow p-4">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Meter ID</th>
+            <th>Count</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="readings.length === 0">
+            <td colspan="6" class="text-center text-muted">No readings found.</td>
+          </tr>
+          <tr v-for="reading in readings" :key="reading.uuid">
+            <td>
+              {{ reading.customer ? `${reading.customer.firstName} ${reading.customer.lastName}` : 'N/A' }}
+            </td>
+            <td>{{ new Date(reading.dateOfReading).toLocaleDateString() }}</td>
+            <td>{{ reading.meterId }}</td>
+            <td>{{ reading.meterCount }}</td>
+            <td>
+              <span :class="getMeterTypeClass(reading.kindOfMeter)">
+                {{ reading.kindOfMeter }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <router-link :to="'/readings/' + reading.uuid" class="btn btn-sm btn-info">
+                  View
+                </router-link>
+                <router-link :to="'/readings/edit/' + reading.uuid" class="btn btn-sm btn-warning">
+                  Edit
+                </router-link>
+                <button @click="deleteReading(reading.uuid)" class="btn btn-sm btn-danger">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
