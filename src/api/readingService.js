@@ -16,12 +16,8 @@ export default {
         const response = apiClient.get("")
         return response
     },
-    getReadingsByParameter(customer, start, end, kindOfMeter) {
-        return apiClient.get("?" +
-        customer == null ? "customer=" + customer : "" +
-        start == null ? "start=" + start : "" +
-        end == null ? "end=" + end : "" +
-        kindOfMeter == null ? "kindOfMeter=" + kindOfMeter : "");
+    getReadingsByParameter(params = new URLSearchParams()) {
+        return apiClient.get(`?${params.toString()}`);
     },
     createReading(reading) {
         const payload = {
