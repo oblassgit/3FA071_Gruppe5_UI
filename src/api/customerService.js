@@ -23,6 +23,14 @@ export default {
             throw error;
         }
     },
+    async getCustomersByParam(params = new URLSearchParams()) {
+        try {
+            return await apiClient.get(`?${params.toString()}`);
+        } catch (error) {
+            console.error('Error fetching customers:', error);
+            throw error;
+        }
+    },
     getCustomer(uuid) {
         return apiClient.get(`/${uuid}`);
     },
