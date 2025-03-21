@@ -99,14 +99,12 @@ export default {
       this.selectedIndex = -1;
       this.$emit('update:modelValue', customer);
     },
-    resetFilters() {
-      this.$refs.customerSearch.reset();
-      this.filters = {
-        customer: null,
-        startDate: '',
-        endDate: '',
-        kindOfMeter: ''
-      };
+    reset() {
+      this.searchQuery = '';
+      this.selectedCustomer = null;
+      this.showDropdown = false;
+      this.selectedIndex = -1;
+      this.$emit('update:modelValue', null);
     }
 
   },

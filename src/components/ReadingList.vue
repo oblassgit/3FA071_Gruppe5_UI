@@ -7,10 +7,10 @@
           Add reading
         </router-link>
         <b-dropdown id="dropdown-export" text="Export readings" variant="primary">
-          <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
-          <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
-          <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
-          <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+          <b-dropdown-item @click="exportData('csv')">CSV</b-dropdown-item>
+          <b-dropdown-item @click="exportData('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
+          <b-dropdown-item @click="exportData('json')">JSON</b-dropdown-item>
+          <b-dropdown-item @click="exportData('xml')">XML</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -71,7 +71,7 @@
           <td>
             {{ reading.customer ? `${reading.customer.firstName} ${reading.customer.lastName}` : 'N/A' }}
           </td>
-          <td>{{ new Date(reading.dateOfReading).toLocaleDateString() }}</td>
+          <td>{{ formatDate(reading.dateOfReading) }}</td>
           <td>{{ reading.meterId }}</td>
           <td>{{ reading.meterCount }}</td>
           <td>
@@ -101,41 +101,36 @@
 
 <script>
 import readingService from '@/api/readingService';
-import exportHelper from "@/helper/exportHelper.js";
-import CustomerSearch from "@/components/CustomerSearch.vue";
+import exportHelper from '@/helper/exportHelper.js';
+import CustomerSearch from '@/components/CustomerSearch.vue';
+import {BDropdownItem} from "bootstrap-vue-3";
 
 export default {
-  components: {CustomerSearch},
+  name: 'ReadingList',
+  components: {BDropdownItem, CustomerSearch },
+
   data() {
     return {
       readings: [],
-      customers: [],
       filters: {
         customer: null,
         startDate: '',
         endDate: '',
         kindOfMeter: ''
       },
-      searchQuery: '',
-      showDropdown: false,
-      selectedIndex: -1,
       dontAskAgain: localStorage.getItem('dontAskDelete') === 'true'
     };
   },
+
   watch: {
-    'filters.customer'() {
-      this.fetchReadings();
-    },
-    'filters.startDate'() {
-      this.fetchReadings();
-    },
-    'filters.endDate'() {
-      this.fetchReadings();
-    },
-    'filters.kindOfMeter'() {
-      this.fetchReadings();
+    filters: {
+      deep: true,
+      handler() {
+        this.fetchReadings();
+      }
     }
   },
+
   methods: {
     async fetchReadings() {
       try {
@@ -160,6 +155,11 @@ export default {
         console.error('Error fetching readings:', error);
       }
     },
+
+    formatDate(date) {
+      return new Date(date).toLocaleDateString();
+    },
+
     getMeterTypeClass(type) {
       const classes = {
         HEIZUNG: 'badge bg-danger',
@@ -169,6 +169,7 @@ export default {
       };
       return classes[type] || classes.UNBEKANNT;
     },
+
     async deleteReading(uuid) {
       if (!this.dontAskAgain) {
         const userConfirmed = confirm('Are you sure you want to delete this reading?');
@@ -183,46 +184,43 @@ export default {
 
       try {
         await readingService.deleteReading(uuid);
-        this.readings = this.readings.filter(reading => reading.uuid !== uuid);
-        alert('Reading deleted successfully');
+        await this.fetchReadings();
       } catch (error) {
         console.error('Error deleting reading:', error);
         alert('Failed to delete reading');
       }
     },
 
-    async export(fileType, region) {
-      switch(fileType) {
-        case 'csv':
+    async exportData(fileType, region = null) {
+      try {
+        if (fileType === 'csv') {
           await exportHelper.exportCsv('readings', region);
-          break;
-        case 'json':
+        } else if (fileType === 'json') {
           await exportHelper.exportJson('readings');
-          break;
-        case 'xml':
+        } else if (fileType === 'xml') {
           await exportHelper.exportXml('readings');
-          break;
+        }
+      } catch (error) {
+        console.error('Error exporting data:', error);
+        alert('Failed to export data');
       }
     },
 
     resetFilters() {
-      this.$refs.customerSearch.reset();
-      this.filters.customer = null;
-      this.filters.startDate = '';
-      this.filters.endDate = '';
-      this.filters.kindOfMeter = '';
+      this.$refs.customerSearch?.reset();
+      this.filters = {
+        customer: null,
+        startDate: '',
+        endDate: '',
+        kindOfMeter: ''
+      };
+
+      console.log(this.filters)
     }
   },
-  async created() {
-    await Promise.all([
-      this.fetchReadings(),
-    ]);
+
+  created() {
+    this.fetchReadings();
   }
 };
 </script>
-
-<style scoped>
-.badge {
-  padding: 0.5em 1em;
-}
-</style>
