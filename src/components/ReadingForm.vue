@@ -6,13 +6,11 @@
         <h2 class="card-title mb-4">{{ isEditing ? 'Edit Reading' : 'New Reading' }}</h2>
         <form @submit.prevent="saveReading">
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Customer</label>
-              <select v-model="reading.customer" class="form-select" required>
-                <option v-for="customer in customers" :key="customer.uuid" :value="customer">
-                  {{ customer.firstName }} {{ customer.lastName }}
-                </option>
-              </select>
+            <div class="mb-3">
+              <CustomerSearch
+                  v-model="reading.customer"
+                  label="Select Customer"
+              />
             </div>
 
             <div class="col-md-6 mb-3">
@@ -66,8 +64,10 @@
 <script>
 import readingService from '@/api/readingService';
 import customerService from '@/api/customerService';
+import CustomerSearch from "@/components/CustomerSearch.vue";
 
 export default {
+  components: {CustomerSearch},
   props: {
     id: {
       type: String,
