@@ -88,6 +88,7 @@
 <script>
 import customerService from "@/api/customerService";
 import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
+import router from "@/router/index.js";
 
 export default {
   components: { BDropdown, BDropdownItem },
@@ -110,6 +111,9 @@ export default {
     }
   },
   methods: {
+    router() {
+      return router
+    },
     // ... your existing methods
 
     async fetchCustomers() {
