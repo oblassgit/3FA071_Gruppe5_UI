@@ -30,7 +30,7 @@ const url = 'http://127.0.0.1:8080/rest/customers/import';
 export default {
   data() {
     return {
-      parsedData: []
+      parsedData: [],
     };
   },
   methods: {
@@ -38,31 +38,67 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
 
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        complete: (results) => {
-          this.parsedData = results.data;
-          console.log('Parsed CSV (Customer):', results.data);
-        },
-        error: (error) => {
-          console.error('Fehler beim Parsen (Customer):', error.message);
-        }
-      });
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (fileExtension === 'csv') {
+        Papa.parse(file, {
+          header: true,
+          dynamicTyping: true,
+          complete: (results) => {
+            this.parsedData = results.data;
+            console.log('Parsed CSV:', results.data);
+          },
+          error: (error) => {
+            console.error('CSV Parse Error:', error.message);
+          }
+        });
+      } else if (fileExtension === 'xml') {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(reader.result, 'text/xml');
+          const items = xmlDoc.getElementsByTagName('item');
+
+          const parsed = [];
+          for (let i = 0; i < items.length; i++) {
+            const itemNode = items[i];
+            const customer = {};
+
+            for (let j = 0; j < itemNode.children.length; j++) {
+              const child = itemNode.children[j];
+              customer[child.nodeName] = child.textContent;
+            }
+
+            parsed.push(customer);
+          }
+
+          this.parsedData = parsed;
+          console.log('Parsed XML:', parsed);
+        };
+        reader.readAsText(file);
+      } else {
+        alert('Unsupported file type. Please upload a CSV or XML file.');
+      }
     },
+
+
     async saveToDatabase() {
       try {
-        const response = await axios.post(url, {customers: this.parsedData});
+        const response = await axios.post(url, {
+          customers: this.parsedData
+        });
         console.log('Saved to Database:', response.data);
         alert('Data successfully saved!');
       } catch (error) {
         console.error('Error saving to database:', error);
+        console.log(JSON.stringify({customers: this.parsedData}));
         alert('Failed to save data.');
       }
     }
   }
 };
 </script>
+
 
 <style scoped>
 table {
