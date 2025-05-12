@@ -25,7 +25,7 @@
 import Papa from 'papaparse';
 import axios from 'axios';
 
-const url = 'http://127.0.0.1:8080/rest/customers/createcustomers';
+const url = 'http://127.0.0.1:8080/rest/customers/import';
 
 export default {
   data() {
@@ -43,16 +43,16 @@ export default {
         dynamicTyping: true,
         complete: (results) => {
           this.parsedData = results.data;
-          console.log('Parsed CSV (Reading):', results.data);
+          console.log('Parsed CSV (Customer):', results.data);
         },
         error: (error) => {
-          console.error('Fehler beim Parsen (Reading):', error.message);
+          console.error('Fehler beim Parsen (Customer):', error.message);
         }
       });
     },
     async saveToDatabase() {
       try {
-        const response = await axios.post(url, this.parsedData);
+        const response = await axios.post(url, {customers: this.parsedData});
         console.log('Saved to Database:', response.data);
         alert('Data successfully saved!');
       } catch (error) {
