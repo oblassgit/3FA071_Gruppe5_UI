@@ -5,8 +5,8 @@ import CustomerDetail from "@/components/CustomerDetail.vue";
 import ReadingList from "@/components/ReadingList.vue";
 import ReadingForm from "@/components/ReadingForm.vue";
 import ReadingDetail from "@/components/ReadingDetail.vue";
-import ImportCustomer from "@/components/importCustomer.vue";
-import ImportReading from "@/components/importReading.vue";
+import ImportCustomer from "@/components/ImportCustomer.vue";
+import ImportReading from "@/components/ImportReading.vue";
 
 const routes = [
     { path: "/", component: CustomerList },
