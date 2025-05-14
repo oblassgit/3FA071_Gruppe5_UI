@@ -7,10 +7,10 @@
           Add customer
         </router-link>
         <b-dropdown id="dropdown-export" text="Export customer" variant="primary">
-          <b-dropdown-item @click="Export('csv')">CSV</b-dropdown-item>
-          <b-dropdown-item @click="Export('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
-          <b-dropdown-item @click="Export('json')">JSON</b-dropdown-item>
-          <b-dropdown-item @click="Export('xml')">XML</b-dropdown-item>
+          <b-dropdown-item @click="exportData('csv')">CSV</b-dropdown-item>
+          <b-dropdown-item @click="exportData('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
+          <b-dropdown-item @click="exportData('json')">JSON</b-dropdown-item>
+          <b-dropdown-item @click="exportData('xml')">XML</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -87,6 +87,7 @@
 
 <script>
 import customerService from "@/api/customerService";
+import exportHelper from '@/helper/exportHelper.js';
 import {BDropdown, BDropdownItem} from "bootstrap-vue-3";
 import router from "@/router/index.js";
 
@@ -165,6 +166,19 @@ export default {
         endDate: '',
         gender: ''
       };
+    },
+    async exportData(fileType, region) {
+      switch(fileType) {
+        case 'csv':
+          exportHelper.exportCsv('customers', region);
+          break;
+        case 'json':
+          exportHelper.exportJson('customers');
+          break;
+        case 'xml':
+          exportHelper.exportXml('customers');
+          break;
+      }
     }
   },
   created() {
