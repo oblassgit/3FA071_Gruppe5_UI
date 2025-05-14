@@ -15,6 +15,12 @@
               <li class="nav-item">
                 <router-link class="nav-link" to="/readings">Readings</router-link>
               </li>
+              <li class="import-item">
+                <router-link class="nav-link" to="/customers/importCustomer">Import Customer</router-link>
+              </li>
+              <li class="import-item">
+                <router-link class="nav-link" to="/customers/importReading">Import Reading</router-link>
+              </li>
             </ul>
           </div>
         </div>

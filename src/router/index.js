@@ -6,6 +6,8 @@ import CustomerDetail from "@/components/CustomerDetail.vue";
 import ReadingList from "@/components/ReadingList.vue";
 import ReadingForm from "@/components/ReadingForm.vue";
 import ReadingDetail from "@/components/ReadingDetail.vue";
+import ImportCustomer from "@/components/ImportCustomer.vue";
+import ImportReading from "@/components/ImportReading.vue";
 
 const routes = [
     { path: "/", component: Home },
@@ -17,6 +19,8 @@ const routes = [
     { path: "/readings/new", component: ReadingForm },
     { path: "/readings/:id", component: ReadingDetail, props: true },
     { path: "/readings/edit/:id", component: ReadingForm, props: true },
+    { path: "/customers/importCustomer", component: ImportCustomer},
+    { path: "/customers/importReading", component: ImportReading}
 ];
 
 const router = createRouter({
