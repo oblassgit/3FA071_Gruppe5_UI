@@ -1,10 +1,10 @@
 <template>
   <div class="customers">
-    <h2>import customers</h2>
+    <h2>Import Customers</h2>
     <input type="file" @change="handleFile" accept=".csv, .xml, .json" />
     <button :disabled="!parsedData.length" @click="saveToDatabase" style="margin-left: 10px;">Save to Database</button>
     <div v-if="parsedData.length">
-      <h3>results:</h3>
+      <h3>Results:</h3>
       <table>
         <thead>
         <tr>
@@ -76,8 +76,32 @@ export default {
           console.log('Parsed XML:', parsed);
         };
         reader.readAsText(file);
+      } else if (fileExtension === 'json') {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const jsonData = JSON.parse(reader.result);
+            if (Array.isArray(jsonData)) {
+              this.parsedData = jsonData;
+            } else if (jsonData && typeof jsonData === 'object') {
+              // Handle case where JSON is an object with an array property
+              const possibleArrays = Object.values(jsonData).filter(val => Array.isArray(val));
+              if (possibleArrays.length > 0) {
+                this.parsedData = possibleArrays[0];
+              } else {
+                // If it's just a single object, wrap it in an array
+                this.parsedData = [jsonData];
+              }
+            }
+            console.log('Parsed JSON:', this.parsedData);
+          } catch (error) {
+            console.error('JSON Parse Error:', error.message);
+            alert(`JSON Parse Error: ${error.message}`);
+          }
+        };
+        reader.readAsText(file);
       } else {
-        alert('Unsupported file type. Please upload a CSV or XML file.');
+        alert('Unsupported file type. Please upload a CSV, XML, or JSON file.');
       }
     },
 
@@ -104,10 +128,13 @@ export default {
 table {
   border-collapse: collapse;
   width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: left;
 }
 th {
   background-color: #f4f4f4;
@@ -119,5 +146,13 @@ button:disabled {
 button {
   padding: 8px 16px;
   margin-top: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  background-color: #45a049;
 }
 </style>

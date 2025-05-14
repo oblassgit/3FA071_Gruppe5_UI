@@ -36,7 +36,8 @@ export default {
     return {
       parsedData: [],
       readings: [],
-      error: null
+      error: null,
+      fileType: null // Track the file type
     };
   },
   methods: {
@@ -54,6 +55,7 @@ export default {
       const file = event.target.files[0];
       if (!file) return;
       const fileExtension = file.name.split('.').pop().toLowerCase();
+      this.fileType = fileExtension; // Store the file type
 
       if (fileExtension === 'csv') {
         Papa.parse(file, {
@@ -134,7 +136,8 @@ export default {
               }
             }
             console.log('Parsed JSON:', this.parsedData);
-            this.fetchCustomerForReading();
+            // For JSON files, skip fetchCustomerForReading and directly prepare readings
+            this.prepareReadingsFromJson();
           } catch (error) {
             this.error = `JSON Parse Error: ${error.message}`;
             console.error('JSON Parse Error:', error);
@@ -181,6 +184,33 @@ export default {
       } catch (error) {
         this.error = `Error fetching customer data: ${error.message}`;
         console.error('Error fetching customer:', error);
+      }
+    },
+
+    // New method to handle JSON files where customers are already included
+    prepareReadingsFromJson() {
+      if (!this.parsedData || this.parsedData.length === 0) {
+        this.error = "No data available to process";
+        return;
+      }
+
+      try {
+        // Assume JSON already has the correct structure with customer data
+        this.readings = this.parsedData.map(reading => {
+          return {
+            // Use the existing customer data if available
+            customer: reading.customer || null,
+            dateOfReading: this.isValidDate(reading.dateOfReading) ? reading.dateOfReading : null,
+            meterId: reading.meterId || '',
+            substitute: reading.substitute === true || reading.substitute === 'true' || false,
+            meterCount: Number(reading.meterCount) || 0,
+            kindOfMeter: reading.kindOfMeter || ''
+          };
+        });
+        console.log('Prepared JSON readings for saving:', this.readings);
+      } catch (error) {
+        this.error = `Error preparing JSON data: ${error.message}`;
+        console.error('Error preparing JSON data:', error);
       }
     },
 
