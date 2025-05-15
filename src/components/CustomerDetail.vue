@@ -10,7 +10,7 @@
 
         <!-- Action Buttons -->
         <div class="mt-4 d-flex gap-2">
-          <router-link to="/" class="btn btn-primary">Back to List</router-link>
+          <router-link to="/customers" class="btn btn-primary">Back to List</router-link>
           <router-link :to="'/customers/edit/' + customer.uuid" class="btn btn-warning">Edit</router-link>
           <button @click="deleteCustomer" class="btn btn-danger">Delete</button>
         </div>
