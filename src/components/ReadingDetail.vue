@@ -110,7 +110,6 @@ export default {
 
       try {
         await readingService.deleteReading(this.id);
-        alert('Reading deleted successfully');
         this.$router.push('/readings');
       } catch (error) {
         console.error('Error deleting reading:', error);
