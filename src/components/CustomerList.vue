@@ -59,8 +59,7 @@
           <tr v-if="customers.length === 0">
             <td colspan="4" class="text-center text-muted">No customers found.</td>
           </tr>
-          <tr v-else v-for="customer in customers" :key="customer.uuid"
-            @click="router().push({ name: 'customerDetail', params: {id: customer.uuid}})">
+          <tr v-else v-for="customer in customers" :key="customer.uuid">
             <td>{{ customer.firstName }}</td>
             <td>{{ customer.lastName }}</td>
             <td>{{ customer.gender }}</td>

@@ -4,7 +4,7 @@ const apiClient = axios.create({
     baseURL: "http://127.0.0.1:8080/rest/customers", // Adjust baseURL to your backend
     headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json, text/csv, application/xml"
+        "Accept": "application/json, text/csv, application/xml, text/plain"
     },
 });
 
