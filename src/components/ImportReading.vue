@@ -101,9 +101,22 @@ export default {
               const itemNode = items[i];
               const reading = {};
 
+              // Extract customer object separately
+              const customerNode = itemNode.getElementsByTagName('customer')[0];
+              if (customerNode) {
+                reading.customer = {};
+                for (let j = 0; j < customerNode.children.length; j++) {
+                  const child = customerNode.children[j];
+                  reading.customer[child.nodeName] = child.textContent;
+                }
+              }
+
+              // Extract other direct child elements excluding 'customer'
               for (let j = 0; j < itemNode.children.length; j++) {
                 const child = itemNode.children[j];
-                reading[child.nodeName] = child.textContent;
+                if (child.nodeName !== 'customer') {
+                  reading[child.nodeName] = child.textContent;
+                }
               }
 
               parsed.push(reading);
@@ -111,7 +124,10 @@ export default {
 
             this.parsedData = parsed;
             console.log('Parsed XML:', parsed);
-            this.fetchCustomerForReading();
+
+            // Since the customer is already included in the XML,
+            // we should skip fetchCustomerForReading and directly prepare readings
+            this.prepareReadingsFromXml();
           } catch (error) {
             this.error = `XML Parse Error: ${error.message}`;
             console.error('XML Parse Error:', error);
@@ -254,6 +270,30 @@ export default {
         this.error = `Failed to save data: ${error.response?.data?.message || error.message}`;
         console.error('Error saving to database:', error);
         console.log('Failed payload:', JSON.stringify({ readings: this.readings }));
+      }
+    },
+
+    prepareReadingsFromXml() {
+      if (!this.parsedData || this.parsedData.length === 0) {
+        this.error = "No data available to process";
+        return;
+      }
+
+      try {
+        this.readings = this.parsedData.map(reading => {
+          return {
+            customer: reading.customer || null,
+            dateOfReading: this.isValidDate(reading.dateOfReading) ? reading.dateOfReading : null,
+            meterId: reading.meterId || '',
+            substitute: reading.substitute === true || reading.substitute === 'true' || false,
+            meterCount: Number(reading.meterCount) || 0,
+            kindOfMeter: reading.kindOfMeter || ''
+          };
+        });
+        console.log('Prepared XML readings for saving:', this.readings);
+      } catch (error) {
+        this.error = `Error preparing XML data: ${error.message}`;
+        console.error('Error preparing XML data:', error);
       }
     }
   }
