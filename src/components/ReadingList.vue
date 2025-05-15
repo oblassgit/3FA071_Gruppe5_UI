@@ -40,6 +40,7 @@
             <option value="HEIZUNG">Heating</option>
             <option value="STROM">Power</option>
             <option value="WASSER">Water</option>
+            <option value="UNBEKANNT">Unknown</option>
           </select>
         </div>
         <div class="col-md-1 d-flex align-items-end">
