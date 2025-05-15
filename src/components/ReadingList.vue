@@ -6,6 +6,7 @@
         <router-link to="/readings/new" class="btn btn-primary">
           Add reading
         </router-link>
+        <router-link class="btn btn-primary" to="/customers/importReading">Import Reading</router-link>
         <b-dropdown id="dropdown-export" text="Export readings" variant="primary">
           <b-dropdown-item @click="exportData('csv')">CSV</b-dropdown-item>
           <b-dropdown-item @click="exportData('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
