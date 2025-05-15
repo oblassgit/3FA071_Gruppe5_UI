@@ -18,6 +18,14 @@
     </div>
     <div v-if="showDropdown" class="position-absolute w-100 mt-1 shadow bg-white border rounded-2 z-3">
       <div v-if="filteredCustomers.length > 0">
+        <div v-if="allowAllCustomers">
+          <div
+            @click="selectAllCustomers"
+            @mouseenter="selectedIndex = -1"
+            :class="['p-2 cursor-pointer', selectedIndex === -1 ? 'bg-light' : '']">
+            All customers
+          </div>
+        </div>
         <div v-for="(customer, index) in filteredCustomers"
              :key="customer.uuid"
              @click="selectCustomer(customer)"
@@ -46,6 +54,10 @@ export default {
     modelValue: {
       type: Object,
       default: null
+    },
+    allowAllCustomers: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -98,6 +110,13 @@ export default {
       this.showDropdown = false;
       this.selectedIndex = -1;
       this.$emit('update:modelValue', customer);
+    },
+    selectAllCustomers() {
+      this.selectedCustomer = null;
+      this.searchQuery = null;
+      this.showDropdown = false;
+      this.selectedIndex = -1;
+      this.$emit('update:modelValue', null);
     },
     reset() {
       this.searchQuery = '';

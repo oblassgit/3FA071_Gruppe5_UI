@@ -23,6 +23,7 @@
               ref="customerSearch"
               v-model="filters.customer"
               label="Filter by Customer"
+              allowAllCustomers="true"
           />
         </div>
         <div class="col-md-3">
