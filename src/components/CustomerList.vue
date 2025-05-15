@@ -152,7 +152,6 @@ export default {
 
       try {
         customerService.deleteCustomer(uuid);
-        alert("Customer deleted successfully!");
         this.fetchCustomers();
       } catch (error) {
         console.error("Error deleting customer:", error);

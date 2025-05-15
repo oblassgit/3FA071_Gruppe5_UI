@@ -57,7 +57,6 @@ export default {
 
       try {
         await customerService.deleteCustomer(this.id);
-        alert("Customer deleted successfully!");
         this.$router.push("/");
       } catch (error) {
         console.error("Error deleting customer:", error);
