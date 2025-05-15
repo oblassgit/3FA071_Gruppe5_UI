@@ -4,7 +4,7 @@ const apiClient = axios.create({
     baseURL: "http://127.0.0.1:8080/rest/readings", // Adjust baseURL to your backend
     headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json, text/csv, application/xml"
+        "Accept": "application/json, text/csv, application/xml, text/plain"
     },
 });
 
@@ -13,8 +13,7 @@ export default {
         return apiClient.get(`/${uuid}`);
     },
     getReadings() {
-        const response = apiClient.get("")
-        return response
+        return apiClient.get("")
     },
     getReadingsByParameter(params = new URLSearchParams()) {
         return apiClient.get(`?${params.toString()}`);

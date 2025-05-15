@@ -1,10 +1,10 @@
 <!-- src/components/ReadingForm.vue -->
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5" tabindex="0" @keyup.esc.prevent="router().back()">
     <div class="card shadow">
       <div class="card-body">
         <h2 class="card-title mb-4">{{ isEditing ? 'Edit Reading' : 'New Reading' }}</h2>
-        <form @submit.prevent="saveReading">
+        <form @submit.prevent="saveReading" @keyup.enter="saveReading">
           <div class="row">
             <div class="mb-3">
               <CustomerSearch
@@ -52,8 +52,8 @@
           </div>
 
           <div class="mt-3">
-            <button type="submit" class="btn btn-primary me-2">Save</button>
-            <router-link to="/readings" class="btn btn-secondary">Cancel</router-link>
+            <button type="submit" class="btn btn-primary me-2">{{ isEditing ? "Update" : "Create" }}<span class="key-symbol">⏎</span></button>
+            <router-link to="/readings" class="btn btn-secondary">Cancel <span class="key-symbol">esc</span></router-link>
           </div>
         </form>
       </div>
@@ -65,6 +65,7 @@
 import readingService from '@/api/readingService';
 import customerService from '@/api/customerService';
 import CustomerSearch from "@/components/CustomerSearch.vue";
+import router from "@/router/index.js";
 
 export default {
   components: {CustomerSearch},
@@ -122,6 +123,9 @@ export default {
     }
   },
   methods: {
+    router() {
+      return router
+    },
     async saveReading() {
       try {
         if (this.isEditing) {
@@ -131,6 +135,7 @@ export default {
         }
         this.$router.push('/readings');
       } catch (error) {
+        console.error(JSON.stringify(this.reading) + "id: " + this.id);
         console.error('Error saving reading:', error);
         alert('Failed to save reading');
       }
@@ -138,3 +143,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.key-symbol {
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+</style>

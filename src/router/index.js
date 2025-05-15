@@ -18,7 +18,7 @@ const routes = [
     { path: "/readings", component: ReadingList },
     { path: "/readings/new", component: ReadingForm },
     { path: "/readings/:id", component: ReadingDetail, props: true },
-    { path: "/readings/edit/:id", component: ReadingForm, props: true },
+    { path: "/readings/edit/:id", component: ReadingForm, props: true},
     { path: "/customers/importCustomer", component: ImportCustomer},
     { path: "/customers/importReading", component: ImportReading}
 ];
