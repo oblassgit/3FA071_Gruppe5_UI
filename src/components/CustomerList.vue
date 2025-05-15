@@ -6,6 +6,7 @@
         <router-link to="/customers/new" class="btn btn-primary">
           Add customer
         </router-link>
+        <router-link class="btn btn-primary" to="/customers/importCustomer">Import Customer</router-link>
         <b-dropdown id="dropdown-export" text="Export customer" variant="primary">
           <b-dropdown-item @click="exportData('csv')">CSV</b-dropdown-item>
           <b-dropdown-item @click="exportData('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>

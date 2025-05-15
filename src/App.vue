@@ -3,23 +3,14 @@
     <header class="bg-blue-500 text-white p-4">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-          <div class="navbar-brand">Household-Hub</div>
+          <div class="navbar-brand"><router-link class="nav-link" to="/">Household-Hub</router-link></div>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <router-link class="nav-link" to="/">Home</router-link>
-              </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/customers">Customers</router-link>
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" to="/readings">Readings</router-link>
-              </li>
-              <li class="import-item">
-                <router-link class="nav-link" to="/customers/importCustomer">Import Customer</router-link>
-              </li>
-              <li class="import-item">
-                <router-link class="nav-link" to="/customers/importReading">Import Reading</router-link>
               </li>
             </ul>
           </div>
