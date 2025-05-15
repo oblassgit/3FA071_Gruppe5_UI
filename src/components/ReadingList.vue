@@ -4,10 +4,10 @@
       <h1 class="mb-0">Reading List</h1>
       <div class="d-flex gap-2 ms-auto">
         <router-link to="/readings/new" class="btn btn-primary">
-          Add reading
+          Add Reading
         </router-link>
         <router-link class="btn btn-primary" to="/customers/importReading">Import Reading</router-link>
-        <b-dropdown id="dropdown-export" text="Export readings" variant="primary">
+        <b-dropdown id="dropdown-export" text="Export Readings" variant="primary">
           <b-dropdown-item @click="exportData('csv')">CSV</b-dropdown-item>
           <b-dropdown-item @click="exportData('csv', 'eu')">CSV [Optimized for EU]</b-dropdown-item>
           <b-dropdown-item @click="exportData('json')">JSON</b-dropdown-item>
@@ -79,7 +79,7 @@
           <td>{{ reading.meterCount }}</td>
           <td>
               <span :class="getMeterTypeClass(reading.kindOfMeter)">
-                {{ reading.kindOfMeter }}
+                {{ mapTypeToEnglish(reading.kindOfMeter) }}
               </span>
           </td>
           <td>
@@ -106,11 +106,11 @@
 import readingService from '@/api/readingService';
 import exportHelper from '@/helper/exportHelper.js';
 import CustomerSearch from '@/components/CustomerSearch.vue';
-import {BDropdownItem} from "bootstrap-vue-3";
+import { BDropdownItem } from "bootstrap-vue-3";
 
 export default {
   name: 'ReadingList',
-  components: {BDropdownItem, CustomerSearch },
+  components: { BDropdownItem, CustomerSearch },
 
   data() {
     return {
@@ -121,7 +121,13 @@ export default {
         endDate: '',
         kindOfMeter: ''
       },
-      dontAskAgain: localStorage.getItem('dontAskDelete') === 'true'
+      dontAskAgain: localStorage.getItem('dontAskDelete') === 'true',
+      typeMapping: {
+        HEIZUNG: 'Heating',
+        STROM: 'Power',
+        WASSER: 'Water',
+        UNBEKANNT: 'Unknown'
+      }
     };
   },
 
@@ -171,6 +177,10 @@ export default {
         UNBEKANNT: 'badge bg-secondary'
       };
       return classes[type] || classes.UNBEKANNT;
+    },
+
+    mapTypeToEnglish(type) {
+      return this.typeMapping[type] || 'Unknown';
     },
 
     async deleteReading(uuid) {
