@@ -44,6 +44,7 @@ export default {
         Papa.parse(file, {
           header: true,
           dynamicTyping: true,
+          skipEmptyLines: true,
           complete: (results) => {
             this.parsedData = results.data;
             console.log('Parsed CSV:', results.data);
